@@ -1,0 +1,10 @@
+Picobot
+=======
+
+This is a small Picobot simulator.  https://www.cs.hmc.edu/picobot/[Picobot] is
+a simple state machine exercise developed by Harvey Mudd College as part of
+their https://www.cs.hmc.edu/csforall/index.html[CS for All] book.
+
+The goal of this simulator is to provide a way to test rulesets and write
+regression tests against these rulesets, so that improvements and optimizations
+don't break functionality.

@@ -1,0 +1,5 @@
+---
+Style/NestedTernaryOperator:
+    Enabled: false
+Style/TrailingComma:
+    EnforcedStyleForMultiline: comma
