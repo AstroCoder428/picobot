@@ -61,12 +61,12 @@ module Picobot
       res = /^(\d+) ([x*N][x*E][x*W][x*S]) -> ([NEWSX]) (\d+)$/.match rule
       fail 'Invalid rule' unless res
       mapping = {
-        :N => true, :E => true, :S => true, :W => true,
+        :N => false, :E => false, :S => false, :W => false,
         :* => nil,
-        :x => false
+        :x => true
       }
       modes = res[2].each_char.map { |c| mapping[c.to_sym] }
-      dir = mapping[res[3].to_sym] ? res[3].downcase.to_sym : :done
+      dir = mapping[res[3].to_sym] == false ? res[3].downcase.to_sym : :done
       new(res[1].to_i, *modes, dir, res[4].to_i)
     end
 
@@ -91,7 +91,7 @@ module Picobot
     def to_s
       dirs = directions.map do |d|
         val = method(d).call
-        val ? d.to_s.upcase : (val == false ? 'x' : '*')
+        val ? 'x' : (val == false ? d.to_s.upcase : '*')
       end.join('')
       "#{start_state} #{dirs} -> #{dir.to_s.upcase} #{end_state}"
     end
