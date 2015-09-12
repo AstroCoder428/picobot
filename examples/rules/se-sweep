@@ -1,0 +1,12 @@
+# Southeast Sweep
+# Algorithm: Go to the southeast corner, then sweep back and forth until getting
+# to one of the northern corners.
+# This algorithm only works on a board with no obstacles.
+0 *x** -> E 0
+0 *E*x -> S 0
+0 *E*S -> W 1
+1 **x* -> W 1
+1 x*W* -> N 2
+1 N*W* -> N 2
+2 *x** -> E 2
+2 xE** -> N 1
