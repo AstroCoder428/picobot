@@ -24,4 +24,13 @@ EOM
     parser = Picobot::RuleParser.new
     expect { parser.parse(rules) }.to raise_exception Picobot::RuleConflictError
   end
+
+  it 'should complain about overlapping rules' do
+    rules = <<EOM
+0 *x** -> E 0
+0 **x* -> S 0
+EOM
+    parser = Picobot::RuleParser.new
+    expect { parser.parse(rules) }.to raise_exception Picobot::RuleConflictError
+  end
 end
