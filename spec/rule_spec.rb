@@ -15,4 +15,13 @@ EOM
     expect { res = parser.parse(rules) }.not_to raise_exception
     expect(format_rules(res)).to eq rules
   end
+
+  it 'should complain about identical rules' do
+    rules = <<EOM
+0 *x** -> E 0
+0 *x** -> E 0
+EOM
+    parser = Picobot::RuleParser.new
+    expect { parser.parse(rules) }.to raise_exception Picobot::RuleConflictError
+  end
 end

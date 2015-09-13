@@ -3,6 +3,12 @@
 # See https://www.cs.hmc.edu/csforall/index.html and
 # https://www.cs.hmc.edu/picobot/ for more information.
 module Picobot
+  class Exception < ::StandardError
+  end
+
+  class RuleConflictError < Picobot::Exception
+  end
+
   # A Picobot arena.
   class Arena
     attr_reader :max_x, :max_y
@@ -138,7 +144,7 @@ module Picobot
       rules.each_with_index do |r1, i|
         rules[(i + 1)..rules.length].each do |r2|
           # rubocop:disable Style/CaseEquality
-          fail "#{r1} conflicts with #{r2}" if r1 === r2
+          fail RuleConflictError, "#{r1} conflicts with #{r2}" if r1 === r2
         end
       end
     end
