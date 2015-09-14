@@ -50,29 +50,32 @@ module Picobot
       @touched[x][y].nil?
     end
 
-    # Returns a hash mapping directions to a boolean indicating whether a move
-    # is allowed.
+    # Returns a hash mapping directions to a boolean indicating whether a block
+    # is present.
     def bounds(x, y)
       Rule.motions.map do |k, (dx, dy)|
         rx = x + dx
         ry = y + dy
-        [k, include?(rx, ry) && !blocked?(rx, ry)]
+        [k, !include?(rx, ry) || blocked?(rx, ry)]
       end.to_h
     end
   end
 
   # A rule for the Picobot state machine.
+  #
+  # Each corresponding direction is true if it is blocked, and false if it is
+  # unblocked.  This is consistent with the way Arena works.
   Rule = Struct.new(:start_state, :n, :e, :w, :s, :dir, :end_state) do
     def self.parse(rule)
       res = /^(\d+) ([x*N][x*E][x*W][x*S]) -> ([NEWSX]) (\d+)$/.match rule
       fail 'Invalid rule' unless res
       mapping = {
-        :N => false, :E => false, :S => false, :W => false,
+        :N => true, :E => true, :S => true, :W => true,
         :* => nil,
-        :x => true
+        :x => false
       }
       modes = res[2].each_char.map { |c| mapping[c.to_sym] }
-      dir = mapping[res[3].to_sym] == false ? res[3].downcase.to_sym : :done
+      dir = mapping[res[3].to_sym] ? res[3].downcase.to_sym : :done
       new(res[1].to_i, *modes, dir, res[4].to_i)
     end
 
@@ -97,7 +100,7 @@ module Picobot
     def to_s
       dirs = directions.map do |d|
         val = method(d).call
-        val ? 'x' : (val == false ? d.to_s.upcase : '*')
+        val ? d.to_s.upcase : (val == false ? 'x' : '*')
       end.join('')
       "#{start_state} #{dirs} -> #{dir.to_s.upcase} #{end_state}"
     end
