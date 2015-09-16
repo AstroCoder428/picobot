@@ -75,7 +75,11 @@ describe Picobot::Arena do
   it 'should identify bounds correctly' do
     arena = Picobot::Arena.new(10, 10)
     arena.block(0, 1)
-    expect(arena.bounds(0, 0)).to eq({ n: true, s: true, e: false, w: true })
-    expect(arena.bounds(5, 6)).to eq({ n: false, s: false, e: false, w: false })
+    bounds = {
+      corner: { n: true, s: true, e: false, w: true },
+      middle: { n: false, s: false, e: false, w: false },
+    }
+    expect(arena.bounds(0, 0)).to eq bounds[:corner]
+    expect(arena.bounds(5, 6)).to eq bounds[:middle]
   end
 end
