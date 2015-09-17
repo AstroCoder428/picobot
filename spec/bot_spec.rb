@@ -12,6 +12,7 @@ describe Picobot::Bot do
     arena = Picobot::Arena.new(5, 10)
     bot = Picobot::Bot.new(arena, 2, 3)
     expect(bot.done).to be false
+    expect(bot.done?).to be false
   end
 
   it 'should start off in state 0' do
