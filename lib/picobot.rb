@@ -131,12 +131,7 @@ module Picobot
   # A parser for Picobot state machine rules.
   class RuleParser
     def parse(rules)
-      if rules.respond_to? :each_line
-        lines = rules.each_line
-      else
-        lines = rules.split("\n")
-      end
-      rules = lines.map { |l| do_parse(l) }.reject(&:nil?)
+      rules = rules.each_line.map { |l| do_parse(l) }.reject(&:nil?)
       validate(rules)
       rules
     end
